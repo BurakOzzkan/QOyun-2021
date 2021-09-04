@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckingWithDoor : MonoBehaviour
+public class CheckingCollisions : MonoBehaviour
 {
     public GameObject player;
+    public PlayerMovement playerMovement;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,10 @@ public class CheckingWithDoor : MonoBehaviour
         {
             Destroy(collision.gameObject);
         }
+        if (collision.gameObject.tag == "Entanglement")
+        {
+            playerMovement.state = PlayerMovement.State.Entangled;
+            collision.gameObject.SetActive(false);
+        }
     }
-
 }

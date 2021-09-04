@@ -310,8 +310,8 @@ GameObject:
   - component: {fileID: 203126423}
   - component: {fileID: 203126422}
   - component: {fileID: 203126420}
-  - component: {fileID: 203126421}
   - component: {fileID: 203126424}
+  - component: {fileID: 203126421}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Untagged
@@ -9403,8 +9403,8 @@ GameObject:
   - component: {fileID: 1296259082}
   - component: {fileID: 1296259081}
   - component: {fileID: 1296259079}
-  - component: {fileID: 1296259078}
   - component: {fileID: 1296259080}
+  - component: {fileID: 1296259078}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Untagged
@@ -9590,7 +9590,6 @@ MonoBehaviour:
   player1: {fileID: 203126419}
   player2: {fileID: 1296259077}
   numberOfMoves: 0
-  dstRaycast: 10
 --- !u!4 &1686016419
 Transform:
   m_ObjectHideFlags: 0
@@ -9621,7 +9620,7 @@ GameObject:
   - component: {fileID: 1689987122}
   m_Layer: 0
   m_Name: Entanglement1
-  m_TagString: Untagged
+  m_TagString: Entanglement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
