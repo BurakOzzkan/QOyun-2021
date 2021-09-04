@@ -5,11 +5,15 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-    public Rigidbody2D player1Rb;
-    public Rigidbody2D player2Rb;
-    float movementSpeed = 5f;
+    public GameObject player1;
+    public GameObject player2;
+    Rigidbody2D player1Rb;
+    Rigidbody2D player2Rb;
+
+    float movementSpeed = 64f;
     Vector2 movement;
     State state = State.Earth;
+    bool moved = false;
     
     public enum State
     {
@@ -23,7 +27,8 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        player1Rb = player1.GetComponent<Rigidbody2D>();
+        player2Rb = player2.GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -35,29 +40,32 @@ public class PlayerMovement : MonoBehaviour
             else if (state == State.Qars) state = State.Earth;
         }
 
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-        movement = movement.normalized;
-
-
     }
 
     void FixedUpdate()
     {
-        switch (state)
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+        if (!moved)
         {
-            case State.Earth:
-                player1Rb.MovePosition(player1Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
-                break;
-            case State.Qars:
-                player2Rb.MovePosition(player2Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
-                break;
-            case State.Entangled:
-                break;
-            case State.ReverseEntangled:
-                break;
-            default: break;
+            moved = true;
+            switch (state)
+            {
+                case State.Earth:
+                    player1Rb.MovePosition(player1Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
+                    break;
+                case State.Qars:
+                    player2Rb.MovePosition(player2Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
+                    break;
+                case State.Entangled:
+                    break;
+                case State.ReverseEntangled:
+                    break;
+                default: break;
+            }
         }
+
+        if (movement == Vector2.zero && moved == true) moved = false;
     }
 
 }
