@@ -10,11 +10,13 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D player1Rb;
     Rigidbody2D player2Rb;
 
-    int numberOfMoves = 0;
+    public int numberOfMoves = 0;
+    float dstRaycast = 0.65f;
     float movementSpeed = 32f;
     Vector2 movement;
     State state = State.Earth;
     bool moved = false;
+    bool hittingWall = false;
     
     public enum State
     {
@@ -47,9 +49,28 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        GameObject currentGameObject = player1;
+        if (state == State.Earth) currentGameObject = player1;
+        else if (state == State.Qars) currentGameObject = player2;
+
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-        if (!moved)
+        RaycastHit2D hit = Physics2D.Raycast(currentGameObject.transform.position, new Vector3(movement.x, movement.y, 0), dstRaycast);
+
+        if (hit.collider != null)
+        {
+            if (hit.collider.gameObject.name == "Collidable")
+            {
+                hittingWall = true;
+            }
+        }
+        else
+        {
+            hittingWall = false;
+        }
+
+
+        if (!moved && !hittingWall)
         {
             moved = true;
             if (Mathf.Abs(movement.x) == 1 && Mathf.Abs(movement.y) == 1) goto OutOfIf;
@@ -73,14 +94,6 @@ public class PlayerMovement : MonoBehaviour
         if (movement == Vector2.zero && moved == true) moved = false;
 
 
-        GameObject currentGameObject = player1;
-        if (state == State.Earth) currentGameObject = player1;
-        else if (state == State.Qars) currentGameObject = player2;
-        RaycastHit2D hit = Physics2D.Raycast(currentGameObject.transform.position, movement);
-        if (hit.collider != null)
-        {
-            Debug.Log("aaaa");
-        }
     }
 
 }
