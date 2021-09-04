@@ -312,6 +312,7 @@ GameObject:
   - component: {fileID: 203126420}
   - component: {fileID: 203126424}
   - component: {fileID: 203126421}
+  - component: {fileID: 203126425}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Untagged
@@ -353,6 +354,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 203126419}
+  playerMovement: {fileID: 1686016418}
+  dstToEntanglement: {fileID: 203126425}
+  inEntanglement: 0
 --- !u!212 &203126422
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -434,6 +438,23 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.3
+--- !u!114 &203126425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203126419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07ed37afc29ed440485a20d434c5ab08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entanglement: {fileID: 1689987118}
+  checkingCollisions: {fileID: 203126421}
+  x: {fileID: 7499247567711991174, guid: d7ddb47b90bf44cb78e1057cdfdccc09, type: 3}
+  cnot: {fileID: 2091242322729353427, guid: 4ef2dd7f0625e4197a2cb4538b131a1c, type: 3}
+  isX: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,7 +606,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 3292b2ec07a7c4c418b6d9f3dc41e49d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3537,7 +3558,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1395b4b0718af4df4b4d6bd956e91dc0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9425,6 +9446,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1296259077}
+  playerMovement: {fileID: 1686016418}
+  dstToEntanglement: {fileID: 0}
+  inEntanglement: 0
 --- !u!50 &1296259079
 Rigidbody2D:
   serializedVersion: 4
@@ -9590,6 +9614,7 @@ MonoBehaviour:
   player1: {fileID: 203126419}
   player2: {fileID: 1296259077}
   numberOfMoves: 0
+  state: 0
 --- !u!4 &1686016419
 Transform:
   m_ObjectHideFlags: 0

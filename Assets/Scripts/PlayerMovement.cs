@@ -54,18 +54,19 @@ public class PlayerMovement : MonoBehaviour
         GameObject currentGameObject2 = player2;
         if (state == State.Earth) currentGameObject = player1;
         else if (state == State.Qars) currentGameObject = player2;
-        else if (state == State.Entangled)
+        else if (state == State.Entangled || state == State.ReverseEntangled)
         {
             currentGameObject = player1;
             currentGameObject2 = player2;
         }
+        Debug.Log(state);
 
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
 
         RaycastHit2D hit = Physics2D.Raycast(currentGameObject.transform.position, new Vector3(movement.x, movement.y, 0), dstRaycast);
-        RaycastHit2D hit2 = Physics2D.Raycast(currentGameObject2.transform.position, new Vector3(movement.x, movement.y, 0), dstRaycast);
+        RaycastHit2D hit2 = Physics2D.Raycast(currentGameObject2.transform.position, (state == State.Entangled) ? new Vector3(movement.x, movement.y, 0) : new Vector3(-movement.x, -movement.y, 0), dstRaycast);
 
         if (hit.collider != null)
         {
@@ -80,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
             hittingWall2 = false;
         }
 
-        if (state == State.Entangled)
+        if (state == State.Entangled || state == State.ReverseEntangled)
         {
             if(hit2.collider != null)
             {
@@ -96,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
         {
             moved = true;
             if (Mathf.Abs(movement.x) == 1 && Mathf.Abs(movement.y) == 1) goto OutOfIf;
-            else if (movement != Vector2.zero && ((state == State.Entangled) ? !hittingWall || !hittingWall2 : !hittingWall)) numberOfMoves++;
+            else if (movement != Vector2.zero && ((state == State.Entangled || state == State.ReverseEntangled) ? !hittingWall || !hittingWall2 : !hittingWall)) numberOfMoves++;
             switch (state)
             {
                 case State.Earth:
@@ -119,6 +120,11 @@ public class PlayerMovement : MonoBehaviour
                     }
                     break;
                 case State.ReverseEntangled:
+                    if (!hittingWall || !hittingWall2)
+                    {
+                        player1Rb.MovePosition(player1Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
+                        player2Rb.MovePosition(player2Rb.position - movement * movementSpeed * Time.fixedDeltaTime);
+                    }
                     break;
                 default: break;
             }

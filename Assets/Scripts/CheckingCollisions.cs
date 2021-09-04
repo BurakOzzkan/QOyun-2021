@@ -6,6 +6,8 @@ public class CheckingCollisions : MonoBehaviour
 {
     public GameObject player;
     public PlayerMovement playerMovement;
+    public DstToEntanglement dstToEntanglement;
+    public bool inEntanglement = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +27,8 @@ public class CheckingCollisions : MonoBehaviour
         }
         if (collision.gameObject.tag == "Entanglement")
         {
-            playerMovement.state = PlayerMovement.State.Entangled;
+            inEntanglement = true;
+            playerMovement.state = (dstToEntanglement.isX) ? PlayerMovement.State.ReverseEntangled : PlayerMovement.State.Entangled;
             collision.gameObject.SetActive(false);
         }
     }
