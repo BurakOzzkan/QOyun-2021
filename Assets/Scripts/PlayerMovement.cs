@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         if (!moved)
         {
             moved = true;
-            if (Mathf.Abs(movement.x) == 1 && Mathf.Abs(movement.y) == 1) numberOfMoves += 2;
+            if (Mathf.Abs(movement.x) == 1 && Mathf.Abs(movement.y) == 1) goto OutOfIf;
             else if (movement != Vector2.zero) numberOfMoves++;
             switch (state)
             {
@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
                     break;
                 default: break;
             }
-        }
+        } OutOfIf:;
 
         if (movement == Vector2.zero && moved == true) moved = false;
 
