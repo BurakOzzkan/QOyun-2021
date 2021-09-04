@@ -3,6 +3,7 @@
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
 .DS_Store
+.vsconfig
 /Temp/
 /[Ll]ibrary/
 /[Tt]emp/
