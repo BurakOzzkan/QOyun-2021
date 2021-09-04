@@ -52,7 +52,8 @@ public class PlayerMovement : MonoBehaviour
         if (!moved)
         {
             moved = true;
-            if (movement != Vector2.zero) numberOfMoves++;
+            if (Mathf.Abs(movement.x) == 1 && Mathf.Abs(movement.y) == 1) numberOfMoves += 2;
+            else if (movement != Vector2.zero) numberOfMoves++;
             switch (state)
             {
                 case State.Earth:
@@ -70,6 +71,16 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (movement == Vector2.zero && moved == true) moved = false;
+
+
+        GameObject currentGameObject = player1;
+        if (state == State.Earth) currentGameObject = player1;
+        else if (state == State.Qars) currentGameObject = player2;
+        RaycastHit2D hit = Physics2D.Raycast(currentGameObject.transform.position, movement);
+        if (hit.collider != null)
+        {
+            Debug.Log("aaaa");
+        }
     }
 
 }
