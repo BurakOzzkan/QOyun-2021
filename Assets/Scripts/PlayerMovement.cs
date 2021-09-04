@@ -10,7 +10,8 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D player1Rb;
     Rigidbody2D player2Rb;
 
-    float movementSpeed = 64f;
+    int numberOfMoves = 0;
+    float movementSpeed = 32f;
     Vector2 movement;
     State state = State.Earth;
     bool moved = false;
@@ -40,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
             else if (state == State.Qars) state = State.Earth;
         }
 
+        Debug.Log(numberOfMoves);
+
     }
 
     void FixedUpdate()
@@ -49,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
         if (!moved)
         {
             moved = true;
+            if (movement != Vector2.zero) numberOfMoves++;
             switch (state)
             {
                 case State.Earth:
