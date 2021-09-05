@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject player2;
     public Text moveText;
     public Text maximumText;
+    public Text stateText;
     Rigidbody2D player1Rb;
     Rigidbody2D player2Rb;
 
@@ -78,11 +79,17 @@ public class PlayerMovement : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
+        if (Input.GetKey(KeyCode.M) && Input.GetKey(KeyCode.K) && Input.GetKey(KeyCode.B))
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
+
 
     }
 
     void FixedUpdate()
     {
+
         GameObject currentGameObject = player1;
         GameObject currentGameObject2 = player2;
         if (state == State.Earth) currentGameObject = player1;
@@ -140,6 +147,7 @@ public class PlayerMovement : MonoBehaviour
             switch (state)
             {
                 case State.Earth:
+                    stateText.text = "State: Earth";
                     if (!hittingWall)
                     {
                         player1Rb.MovePosition(player1Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
@@ -147,6 +155,8 @@ public class PlayerMovement : MonoBehaviour
                     }
                     break;
                 case State.Qars:
+                    stateText.text = "State: Qars";
+
                     if (!hittingWall)
                     {
                         player2Rb.MovePosition(player2Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
@@ -154,6 +164,8 @@ public class PlayerMovement : MonoBehaviour
                     }
                     break;
                 case State.Entangled:
+                    stateText.text = "State: Entangled";
+
                     if (!hittingWall || !hittingWall2)
                     {
                         player1Rb.MovePosition(player1Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
@@ -162,6 +174,9 @@ public class PlayerMovement : MonoBehaviour
                     }
                     break;
                 case State.ReverseEntangled:
+                    if (controllingInReverse == player1) stateText.text = "State: Reverse E. (Controlling Earth)";
+                    else if (controllingInReverse == player2) stateText.text = "State: Reverse E. (Controlling Qars)";
+
                     if (!hittingWall || !hittingWall2)
                     {
                         if (controllingInReverse == player1)

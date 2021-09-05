@@ -5,13 +5,25 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Scene1.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Main Menu.unity
+    guid: 9107c0b9590d34136a3a49997f49960c
+  - enabled: 1
+    path: Assets/Scenes/Video.unity
+    guid: fd5a8c5b8aefc436f9640a027028c3ac
   - enabled: 1
     path: Assets/Scenes/EntanglementTutorialScene_1.unity
     guid: a7d7c26dde2f8455c92e6efc3bee3081
   - enabled: 1
     path: Assets/Scenes/ReverseEntanglementTutorialScene_1.unity
     guid: eabf1992410214b6992c20e8a247cff5
+  - enabled: 1
+    path: Assets/Scenes/Puzzle1Scene.unity
+    guid: 0f320156883c140c88e0df36be4eb730
+  - enabled: 1
+    path: Assets/Scenes/Puzzle2Scene.unity
+    guid: 67f38d08093f64377b0416d3a6a14ae4
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 0d5994c303182497aa3193bfd6b46a29
   m_configObjects: {}
