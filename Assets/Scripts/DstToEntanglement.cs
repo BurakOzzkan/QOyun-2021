@@ -18,8 +18,6 @@ public class DstToEntanglement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        isX = getRandomNumber();
-        Debug.Log(isX);
     }
 
     // Update is called once per frame
@@ -45,9 +43,4 @@ public class DstToEntanglement : MonoBehaviour
 
     }
 
-
-    bool getRandomNumber()
-    {
-        return new System.Random().NextDouble() < 0.5;
-    }
 }

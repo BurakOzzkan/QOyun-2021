@@ -18,7 +18,8 @@ public class PlayerMovement : MonoBehaviour
     bool moved = false;
     bool hittingWall = false;
     bool hittingWall2 = false;
-    
+    GameObject controllingInReverse;
+
     public enum State
     {
         Earth,
@@ -33,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     {
         player1Rb = player1.GetComponent<Rigidbody2D>();
         player2Rb = player2.GetComponent<Rigidbody2D>();
+        controllingInReverse = player1;
     }
 
     // Update is called once per frame
@@ -42,6 +44,16 @@ public class PlayerMovement : MonoBehaviour
         {
             if (state == State.Earth) state = State.Qars;
             else if (state == State.Qars) state = State.Earth;
+            else if (state == State.ReverseEntangled)
+            {
+                if (controllingInReverse == player1) controllingInReverse = player2;
+                else controllingInReverse = player1;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (state == State.Entangled || state == State.ReverseEntangled) state = State.Earth;
         }
 
         Debug.Log(numberOfMoves);
@@ -59,7 +71,6 @@ public class PlayerMovement : MonoBehaviour
             currentGameObject = player1;
             currentGameObject2 = player2;
         }
-        Debug.Log(state);
 
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
@@ -67,6 +78,12 @@ public class PlayerMovement : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(currentGameObject.transform.position, new Vector3(movement.x, movement.y, 0), dstRaycast);
         RaycastHit2D hit2 = Physics2D.Raycast(currentGameObject2.transform.position, (state == State.Entangled) ? new Vector3(movement.x, movement.y, 0) : new Vector3(-movement.x, -movement.y, 0), dstRaycast);
+
+        if (state == State.ReverseEntangled && controllingInReverse == player2)
+        {
+            hit = Physics2D.Raycast(currentGameObject.transform.position, new Vector3(-movement.x, -movement.y, 0), dstRaycast);
+            hit2 = Physics2D.Raycast(currentGameObject2.transform.position, new Vector3(movement.x, movement.y, 0), dstRaycast);
+        }
 
         if (hit.collider != null)
         {
@@ -122,8 +139,17 @@ public class PlayerMovement : MonoBehaviour
                 case State.ReverseEntangled:
                     if (!hittingWall || !hittingWall2)
                     {
-                        player1Rb.MovePosition(player1Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
-                        player2Rb.MovePosition(player2Rb.position - movement * movementSpeed * Time.fixedDeltaTime);
+                        if (controllingInReverse == player1)
+                        {
+                            player1Rb.MovePosition(player1Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
+                            player2Rb.MovePosition(player2Rb.position - movement * movementSpeed * Time.fixedDeltaTime);
+                        }
+
+                        if (controllingInReverse == player2)
+                        {
+                            player1Rb.MovePosition(player1Rb.position - movement * movementSpeed * Time.fixedDeltaTime);
+                            player2Rb.MovePosition(player2Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
+                        }
                     }
                     break;
                 default: break;
