@@ -5,7 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Scene1.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/EntanglementTutorialScene_1.unity
+    guid: a7d7c26dde2f8455c92e6efc3bee3081
+  - enabled: 1
+    path: Assets/Scenes/ReverseEntanglementTutorialScene_1.unity
+    guid: eabf1992410214b6992c20e8a247cff5
   m_configObjects: {}

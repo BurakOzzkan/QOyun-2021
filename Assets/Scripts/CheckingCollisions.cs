@@ -23,7 +23,18 @@ public class CheckingCollisions : MonoBehaviour
     {
         if (collision.gameObject.tag == "Door")
         {
-            Destroy(collision.gameObject);
+            if (gameObject.name == "Player1")
+            {
+                playerMovement.isPlayer1Finished = true;
+                playerMovement.state = PlayerMovement.State.Qars;
+                playerMovement.player1.SetActive(false);
+            }
+            else if (gameObject.name == "Player2")
+            {
+                playerMovement.isPlayer2Finished = true;
+                playerMovement.state = PlayerMovement.State.Earth;
+                playerMovement.player2.SetActive(false);
+            }
         }
         if (collision.gameObject.tag == "Entanglement")
         {

@@ -1,16 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
 
     public GameObject player1;
     public GameObject player2;
+    public Text moveText;
+    public Text maximumText;
     Rigidbody2D player1Rb;
     Rigidbody2D player2Rb;
 
     public int numberOfMoves = 0;
+    public bool isPlayer1Finished = false;
+    public bool isPlayer2Finished = false;
     float dstRaycast = 0.65f;
     float movementSpeed = 32f;
     Vector2 movement;
@@ -19,6 +25,10 @@ public class PlayerMovement : MonoBehaviour
     bool hittingWall = false;
     bool hittingWall2 = false;
     GameObject controllingInReverse;
+    int maximumMoves;
+
+    public string nextSceneName;
+    AudioSource audioData;
 
     public enum State
     {
@@ -35,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
         player1Rb = player1.GetComponent<Rigidbody2D>();
         player2Rb = player2.GetComponent<Rigidbody2D>();
         controllingInReverse = player1;
+        maximumMoves = int.Parse(maximumText.text.Substring(15));
+        audioData = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -51,12 +63,21 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             if (state == State.Entangled || state == State.ReverseEntangled) state = State.Earth;
         }
 
-        Debug.Log(numberOfMoves);
+        if (numberOfMoves <= maximumMoves && isPlayer1Finished && isPlayer2Finished)
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
+
+        if ((numberOfMoves > maximumMoves && isPlayer1Finished && isPlayer2Finished) || Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
 
     }
 
@@ -114,19 +135,22 @@ public class PlayerMovement : MonoBehaviour
         {
             moved = true;
             if (Mathf.Abs(movement.x) == 1 && Mathf.Abs(movement.y) == 1) goto OutOfIf;
-            else if (movement != Vector2.zero && ((state == State.Entangled || state == State.ReverseEntangled) ? !hittingWall || !hittingWall2 : !hittingWall)) numberOfMoves++;
+            else if (movement != Vector2.zero && ((state == State.Entangled || state == State.ReverseEntangled) ? !hittingWall || !hittingWall2 : !hittingWall) && (!isPlayer1Finished || !isPlayer2Finished)) numberOfMoves++;
+            moveText.text = (numberOfMoves >= 2) ? "Moves: " + numberOfMoves.ToString() : "Move: " + numberOfMoves.ToString();
             switch (state)
             {
                 case State.Earth:
                     if (!hittingWall)
                     {
                         player1Rb.MovePosition(player1Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
+                        if (movement != Vector2.zero) audioData.Play(0);
                     }
                     break;
                 case State.Qars:
                     if (!hittingWall)
                     {
                         player2Rb.MovePosition(player2Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
+                        if (movement != Vector2.zero) audioData.Play(0);
                     }
                     break;
                 case State.Entangled:
@@ -134,6 +158,7 @@ public class PlayerMovement : MonoBehaviour
                     {
                         player1Rb.MovePosition(player1Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
                         player2Rb.MovePosition(player2Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
+                        if (movement != Vector2.zero) audioData.Play(0);
                     }
                     break;
                 case State.ReverseEntangled:
@@ -143,13 +168,16 @@ public class PlayerMovement : MonoBehaviour
                         {
                             player1Rb.MovePosition(player1Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
                             player2Rb.MovePosition(player2Rb.position - movement * movementSpeed * Time.fixedDeltaTime);
+                            if (movement != Vector2.zero) audioData.Play(0);
                         }
 
                         if (controllingInReverse == player2)
                         {
                             player1Rb.MovePosition(player1Rb.position - movement * movementSpeed * Time.fixedDeltaTime);
                             player2Rb.MovePosition(player2Rb.position + movement * movementSpeed * Time.fixedDeltaTime);
+                            if (movement != Vector2.zero) audioData.Play(0);
                         }
+
                     }
                     break;
                 default: break;
